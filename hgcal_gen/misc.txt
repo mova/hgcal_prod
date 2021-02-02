@@ -1,0 +1,3 @@
+scram b -j8 USER_CXXFLAGS="-fopenmp"
+
+rsync -asP --no-perms --no-owner --no-group --exclude "*.root" --exclude "*__init__*" --exclude "*.svn*" --exclude "*fuse*" --exclude "weights/*" --exclude "temp/*" --exclude "*cmsShow*" --exclude "plots/*" --exclude "documentation/*" --exclude "*sourceFiles*" --exclude "*.pdf" --exclude "*.png" --exclude "*.log" --exclude "*.pyc" --exclude "*_cc.*" --exclude "*.pcm" --exclude "*README*" ./* sobhatta@lxplus.cern.ch:/afs/cern.ch/work/s/sobhatta/private/HGCal_GAN/production/CMSSW_11_1_6/src/
