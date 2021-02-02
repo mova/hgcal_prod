@@ -5,3 +5,6 @@ __init__.py
 #*#
 *~
 *.root
+.env
+.vscode/
+workspace.code-workspace
