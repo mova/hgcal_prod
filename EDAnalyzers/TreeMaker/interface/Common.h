@@ -79,28 +79,28 @@ namespace Common
     }
     
     
-    int getPileup(edm::Handle <std::vector <PileupSummaryInfo> > pileUps_reco)
-    {
-        int pileup_n = 0;
+    // int getPileup(edm::Handle <std::vector <PileupSummaryInfo> > pileUps_reco)
+    // {
+    //     int pileup_n = 0;
         
-        // Start from the end to reach the In-time bunch-crossing quicker
-        for(int iPileUp = (int) pileUps_reco->size() - 1; iPileUp >= 0; iPileUp--)
-        {
-            PileupSummaryInfo pileUpInfo = (*pileUps_reco)[iPileUp];
+    //     // Start from the end to reach the In-time bunch-crossing quicker
+    //     for(int iPileUp = (int) pileUps_reco->size() - 1; iPileUp >= 0; iPileUp--)
+    //     {
+    //         PileupSummaryInfo pileUpInfo = (*pileUps_reco)[iPileUp];
             
-            int bunchCrossingNumber = pileUpInfo.getBunchCrossing();
+    //         int bunchCrossingNumber = pileUpInfo.getBunchCrossing();
             
-            // In-time bunch-crossing pile-up
-            if(bunchCrossingNumber == 0)
-            {
-                pileup_n = pileUpInfo.getPU_NumInteractions();
+    //         // In-time bunch-crossing pile-up
+    //         if(bunchCrossingNumber == 0)
+    //         {
+    //             pileup_n = pileUpInfo.getPU_NumInteractions();
                 
-                break;
-            }
-        }
+    //             break;
+    //         }
+    //     }
         
-        return pileup_n;
-    }
+    //     return pileup_n;
+    // }
     
     
     double getDeltaPhi(double phi1, double phi2)
@@ -117,22 +117,22 @@ namespace Common
     }
     
     
-    double getCellSize(DetId detId, hgcal::RecHitTools *recHitTools)
-    {
-        double SiThickness = recHitTools->getSiThickness(detId);
+    // double getCellSize(DetId detId, hgcal::RecHitTools *recHitTools)
+    // {
+    //     double SiThickness = recHitTools->getSiThickness(detId);
         
-        // HD wafers
-        if(SiThickness < 150)
-        {
-            return 0.465;
-        }
+    //     // HD wafers
+    //     if(SiThickness < 150)
+    //     {
+    //         return 0.465;
+    //     }
         
-        // LD wafers
-        else
-        {
-            return 0.698;
-        }
-    }
+    //     // LD wafers
+    //     else
+    //     {
+    //         return 0.698;
+    //     }
+    // }
     
     template <typename T1, typename T2> std::vector <int> associateRecToSimHit(
         T1 simHitCollPtr,
@@ -207,255 +207,255 @@ namespace Common
     }
     
     
-    double getEnergySum(
-        std::vector <DetId> v_hit_detId,
-        std::vector <std::pair <DetId, float> > v_HandF,
-        std::map <DetId, const HGCRecHit*> m_hit,
-        hgcal::RecHitTools *recHitTools,
-        bool normCellSize,
-        bool useHandF = false
-    )
-    {
-        double totalE = 0;
-        double totalW = 0;
+    // double getEnergySum(
+    //     std::vector <DetId> v_hit_detId,
+    //     std::vector <std::pair <DetId, float> > v_HandF,
+    //     std::map <DetId, const HGCRecHit*> m_hit,
+    //     hgcal::RecHitTools *recHitTools,
+    //     bool normCellSize,
+    //     bool useHandF = false
+    // )
+    // {
+    //     double totalE = 0;
+    //     double totalW = 0;
         
-        for(int iHit = 0; iHit < (int) v_hit_detId.size(); iHit++)
-        {
-            DetId iHit_detId = v_hit_detId.at(iHit);
+    //     for(int iHit = 0; iHit < (int) v_hit_detId.size(); iHit++)
+    //     {
+    //         DetId iHit_detId = v_hit_detId.at(iHit);
             
-            if(m_hit.find(iHit_detId) == m_hit.end())
-            {
-                continue;
-            }
+    //         if(m_hit.find(iHit_detId) == m_hit.end())
+    //         {
+    //             continue;
+    //         }
             
-            //auto iter = std::find_if(
-            //    v_HandF.begin(), v_HandF.end(),
-            //    
-            //    [&iHit_detId](std::pair <DetId, float> &HandF)
-            //    {
-            //        return HandF.first == iHit_detId;
-            //    }
-            //);
-            //
-            //if(iter == v_HandF.end())
-            //{
-            //    continue;
-            //}
-            //
-            ////int HandF_idx = std::distance(v_HandF.begin(), iter);
-            ////
-            ////std::pair <DetId, float> HandF = v_HandF.at(HandF_idx);
-            //
-            //
-            //double energy = m_hit.at(iHit_detId)->energy();// * HandF.second;
-            //
-            //totalE += energy;
+    //         //auto iter = std::find_if(
+    //         //    v_HandF.begin(), v_HandF.end(),
+    //         //    
+    //         //    [&iHit_detId](std::pair <DetId, float> &HandF)
+    //         //    {
+    //         //        return HandF.first == iHit_detId;
+    //         //    }
+    //         //);
+    //         //
+    //         //if(iter == v_HandF.end())
+    //         //{
+    //         //    continue;
+    //         //}
+    //         //
+    //         ////int HandF_idx = std::distance(v_HandF.begin(), iter);
+    //         ////
+    //         ////std::pair <DetId, float> HandF = v_HandF.at(HandF_idx);
+    //         //
+    //         //
+    //         //double energy = m_hit.at(iHit_detId)->energy();// * HandF.second;
+    //         //
+    //         //totalE += energy;
             
-            double w = 1.0;
+    //         double w = 1.0;
             
-            if(normCellSize)
-            {
-                double cellSize = recHitTools->getRadiusToSide(v_hit_detId.at(iHit));
+    //         if(normCellSize)
+    //         {
+    //             double cellSize = recHitTools->getRadiusToSide(v_hit_detId.at(iHit));
                 
-                w = 1.0 / (cellSize*cellSize);
-            }
+    //             w = 1.0 / (cellSize*cellSize);
+    //         }
             
-            totalW += w;
+    //         totalW += w;
             
-            for(int iHandF = 0; iHandF < (int) v_HandF.size(); iHandF++)
-            {
-                std::pair <DetId, float> HandF = v_HandF.at(iHandF);
+    //         for(int iHandF = 0; iHandF < (int) v_HandF.size(); iHandF++)
+    //         {
+    //             std::pair <DetId, float> HandF = v_HandF.at(iHandF);
                 
-                if(iHit_detId == HandF.first)
-                {
-                    double energy = m_hit.at(iHit_detId)->energy() * HandF.second;
+    //             if(iHit_detId == HandF.first)
+    //             {
+    //                 double energy = m_hit.at(iHit_detId)->energy() * HandF.second;
                     
-                    totalE += w * energy;
+    //                 totalE += w * energy;
                     
-                    break;
-                }
-            }
+    //                 break;
+    //             }
+    //         }
             
-            //std::vector<Type> v = ....;
-            //std::string myString = ....;
-            //auto it = find_if(v.begin(), v.end(), [&myString](const Type& obj) {return obj.getName() == myString;})
-            //
-            //if (it != v.end())
-            //{
-            //// found element. it is an iterator to the first matching element.
-            //// if you really need the index, you can also get it:
-            //auto index = std::distance(v.begin(), it);
-            //}
-        }
+    //         //std::vector<Type> v = ....;
+    //         //std::string myString = ....;
+    //         //auto it = find_if(v.begin(), v.end(), [&myString](const Type& obj) {return obj.getName() == myString;})
+    //         //
+    //         //if (it != v.end())
+    //         //{
+    //         //// found element. it is an iterator to the first matching element.
+    //         //// if you really need the index, you can also get it:
+    //         //auto index = std::distance(v.begin(), it);
+    //         //}
+    //     }
         
-        //double totalE_test = 0;
-        //
-        //for(int iHit = 0; iHit < (int) v_hit_detId.size(); iHit++)
-        //{
-        //    DetId iHit_detId = v_hit_detId.at(iHit);
-        //    
-        //    for(int iFrac = 0; iFrac < (int) v_HandF.size(); iFrac++)
-        //    {
-        //        std::pair <DetId, float> HandF = v_HandF.at(iFrac);
-        //        
-        //        if(iHit_detId == HandF.first)
-        //        {
-        //            totalE_test += m_hit.at(HandF.first)->energy() * HandF.second;
-        //        }
-        //    }
-        //}
-        //
-        //printf("totalE %0.2f, totalE_test %0.2f \n", totalE, totalE_test);
+    //     //double totalE_test = 0;
+    //     //
+    //     //for(int iHit = 0; iHit < (int) v_hit_detId.size(); iHit++)
+    //     //{
+    //     //    DetId iHit_detId = v_hit_detId.at(iHit);
+    //     //    
+    //     //    for(int iFrac = 0; iFrac < (int) v_HandF.size(); iFrac++)
+    //     //    {
+    //     //        std::pair <DetId, float> HandF = v_HandF.at(iFrac);
+    //     //        
+    //     //        if(iHit_detId == HandF.first)
+    //     //        {
+    //     //            totalE_test += m_hit.at(HandF.first)->energy() * HandF.second;
+    //     //        }
+    //     //    }
+    //     //}
+    //     //
+    //     //printf("totalE %0.2f, totalE_test %0.2f \n", totalE, totalE_test);
         
-        if(totalW)
-        {
-            totalE = totalE / totalW * (double) v_hit_detId.size();
-        }
+    //     if(totalW)
+    //     {
+    //         totalE = totalE / totalW * (double) v_hit_detId.size();
+    //     }
         
-        return totalE;
-    }
+    //     return totalE;
+    // }
     
     
-    double getEnergySum(
-        std::vector <std::pair <DetId, float> > v_hit_HandF,
-        std::vector <std::pair <DetId, float> > v_HandF,
-        std::map <DetId, const HGCRecHit*> m_hit,
-        hgcal::RecHitTools *recHitTools,
-        bool normCellSize,
-        bool useHandF = false
-    )
-    {
-        std::vector <DetId> v_hit_detId;
+    // double getEnergySum(
+    //     std::vector <std::pair <DetId, float> > v_hit_HandF,
+    //     std::vector <std::pair <DetId, float> > v_HandF,
+    //     std::map <DetId, const HGCRecHit*> m_hit,
+    //     hgcal::RecHitTools *recHitTools,
+    //     bool normCellSize,
+    //     bool useHandF = false
+    // )
+    // {
+    //     std::vector <DetId> v_hit_detId;
         
-        for(int iHit = 0; iHit < (int) v_hit_HandF.size(); iHit++)
-        {
-            v_hit_detId.push_back(v_hit_HandF.at(iHit).first);
-        }
+    //     for(int iHit = 0; iHit < (int) v_hit_HandF.size(); iHit++)
+    //     {
+    //         v_hit_detId.push_back(v_hit_HandF.at(iHit).first);
+    //     }
         
-        return getEnergySum(
-            v_hit_detId,
-            v_HandF,
-            m_hit,
-            recHitTools,
-            normCellSize,
-            useHandF
-        );
-    }
+    //     return getEnergySum(
+    //         v_hit_detId,
+    //         v_HandF,
+    //         m_hit,
+    //         recHitTools,
+    //         normCellSize,
+    //         useHandF
+    //     );
+    // }
     
     
-    std::vector <double> getVariances(
-        DetId refHit_detId,
-        std::vector <std::pair <DetId, float> > v_HandF,
-        std::map <DetId, const HGCRecHit*> m_hit,
-        hgcal::RecHitTools *recHitTools,
-        double R
-    )
-    {
-        double varEtaEta = 0;
-        double varPhiPhi = 0;
-        double varEtaPhi = 0;
+    // std::vector <double> getVariances(
+    //     DetId refHit_detId,
+    //     std::vector <std::pair <DetId, float> > v_HandF,
+    //     std::map <DetId, const HGCRecHit*> m_hit,
+    //     hgcal::RecHitTools *recHitTools,
+    //     double R
+    // )
+    // {
+    //     double varEtaEta = 0;
+    //     double varPhiPhi = 0;
+    //     double varEtaPhi = 0;
         
-        auto center_pos = recHitTools->getPosition(refHit_detId);
+    //     auto center_pos = recHitTools->getPosition(refHit_detId);
         
-        for(int iHit = 0; iHit < (int) v_HandF.size(); iHit++)
-        {
-            DetId iHit_detId = v_HandF.at(iHit).first;
-            double frac = v_HandF.at(iHit).second;
+    //     for(int iHit = 0; iHit < (int) v_HandF.size(); iHit++)
+    //     {
+    //         DetId iHit_detId = v_HandF.at(iHit).first;
+    //         double frac = v_HandF.at(iHit).second;
             
-            auto iHit_pos = recHitTools->getPosition(iHit_detId);
+    //         auto iHit_pos = recHitTools->getPosition(iHit_detId);
             
-            double dX = iHit_pos.x() - center_pos.x();
-            double dY = iHit_pos.y() - center_pos.y();
+    //         double dX = iHit_pos.x() - center_pos.x();
+    //         double dY = iHit_pos.y() - center_pos.y();
             
-            double dist = sqrt(dX*dX + dY*dY);
+    //         double dist = sqrt(dX*dX + dY*dY);
             
-            double cellSize = getCellSize(iHit_detId, recHitTools);
+    //         double cellSize = getCellSize(iHit_detId, recHitTools);
             
-            double Rmax = R + cellSize;
+    //         double Rmax = R + cellSize;
             
-            if(dist > Rmax)
-            {
-                continue;
-            }
+    //         if(dist > Rmax)
+    //         {
+    //             continue;
+    //         }
             
-            double energy = 0;
+    //         double energy = 0;
             
-            if(m_hit.find(iHit_detId) != m_hit.end())
-            {
-                energy = m_hit.at(iHit_detId)->energy() * frac;
-            }
+    //         if(m_hit.find(iHit_detId) != m_hit.end())
+    //         {
+    //             energy = m_hit.at(iHit_detId)->energy() * frac;
+    //         }
             
-            double dEta = iHit_pos.eta() - center_pos.eta();
-            double dPhi = getDeltaPhi(iHit_pos.phi(), center_pos.phi());
+    //         double dEta = iHit_pos.eta() - center_pos.eta();
+    //         double dPhi = getDeltaPhi(iHit_pos.phi(), center_pos.phi());
             
-            varEtaEta += energy * dEta * dEta;
-            varPhiPhi += energy * dPhi * dPhi;
-            varEtaPhi += energy * dEta * dPhi;
-        }
+    //         varEtaEta += energy * dEta * dEta;
+    //         varPhiPhi += energy * dPhi * dPhi;
+    //         varEtaPhi += energy * dEta * dPhi;
+    //     }
         
-        //printf("varEtaEta %0.4f, varPhiPhi %0.4f \n", varEtaEta, varPhiPhi);
+    //     //printf("varEtaEta %0.4f, varPhiPhi %0.4f \n", varEtaEta, varPhiPhi);
         
-        std::vector <double> v_variance = {
-            varEtaEta,
-            varPhiPhi,
-            varEtaPhi,
-        };
+    //     std::vector <double> v_variance = {
+    //         varEtaEta,
+    //         varPhiPhi,
+    //         varEtaPhi,
+    //     };
         
-        return v_variance;
-    }
+    //     return v_variance;
+    // }
     
     
-    std::vector <DetId> getNeighborR(
-        DetId detId,
-        std::vector <std::pair <DetId, float> > v_HandF,
-        double R,
-        const HGCalTopology topo,
-        hgcal::RecHitTools *recHitTools
-    )
-    {
-        std::map <DetId, bool> m_detId_isIncluded;
+    // std::vector <DetId> getNeighborR(
+    //     DetId detId,
+    //     std::vector <std::pair <DetId, float> > v_HandF,
+    //     double R,
+    //     const HGCalTopology topo,
+    //     hgcal::RecHitTools *recHitTools
+    // )
+    // {
+    //     std::map <DetId, bool> m_detId_isIncluded;
         
-        std::vector <DetId> v_neighborR_detId;
+    //     std::vector <DetId> v_neighborR_detId;
         
-        v_neighborR_detId.push_back(detId);
-        m_detId_isIncluded[detId] = true;
+    //     v_neighborR_detId.push_back(detId);
+    //     m_detId_isIncluded[detId] = true;
         
-        auto center_pos = recHitTools->getPosition(detId);
+    //     auto center_pos = recHitTools->getPosition(detId);
         
-        for(int iHit = 0; iHit < (int) v_HandF.size(); iHit++)
-        {
-            std::pair <DetId, float> p_HandF = v_HandF.at(iHit);
+    //     for(int iHit = 0; iHit < (int) v_HandF.size(); iHit++)
+    //     {
+    //         std::pair <DetId, float> p_HandF = v_HandF.at(iHit);
             
-            if(p_HandF.first.det() != DetId::HGCalEE)
-            {
-                continue;
-            }
+    //         if(p_HandF.first.det() != DetId::HGCalEE)
+    //         {
+    //             continue;
+    //         }
             
-            auto iHit_pos = recHitTools->getPosition(p_HandF.first);
+    //         auto iHit_pos = recHitTools->getPosition(p_HandF.first);
             
-            double dX = iHit_pos.x() - center_pos.x();
-            double dY = iHit_pos.y() - center_pos.y();
-            double dZ = iHit_pos.z() - center_pos.z();
+    //         double dX = iHit_pos.x() - center_pos.x();
+    //         double dY = iHit_pos.y() - center_pos.y();
+    //         double dZ = iHit_pos.z() - center_pos.z();
             
-            double dist = sqrt(dX*dX + dY*dY + dZ*dZ);
+    //         double dist = sqrt(dX*dX + dY*dY + dZ*dZ);
             
-            double cellSize = getCellSize(detId, recHitTools);
+    //         double cellSize = getCellSize(detId, recHitTools);
             
-            double R_max = R + cellSize;
+    //         double R_max = R + cellSize;
             
-            if(
-                dist < R_max &&
-                m_detId_isIncluded.find(p_HandF.first) == m_detId_isIncluded.end()
-            )
-            {
-                v_neighborR_detId.push_back(p_HandF.first);
-                m_detId_isIncluded[p_HandF.first] = true;
-            }
-        }
+    //         if(
+    //             dist < R_max &&
+    //             m_detId_isIncluded.find(p_HandF.first) == m_detId_isIncluded.end()
+    //         )
+    //         {
+    //             v_neighborR_detId.push_back(p_HandF.first);
+    //             m_detId_isIncluded[p_HandF.first] = true;
+    //         }
+    //     }
         
         
-        return v_neighborR_detId;
-    }
+    //     return v_neighborR_detId;
+    // }
     
     
     std::vector <DetId> getNeighbor19(DetId detId, const HGCalTopology topo)

@@ -89,14 +89,6 @@ process.source = cms.Source(
 if len(options.eventRange):
     process.source.eventsToProcess = cms.untracked.VEventRange(options.eventRange)
 
-
-# process.options = cms.untracked.PSet(
-#    #SkipEvent = cms.untracked.vstring("ProductNotFound"),
-#
-#    #printDependencies = cms.untracked.bool(True),
-# )
-
-
 if options.depGraph:
     process.DependencyGraph = cms.Service("DependencyGraph")
     process.source = cms.Source("EmptySource")
@@ -113,16 +105,12 @@ ed_analyzer_kwargs = {
     "label_generator": cms.InputTag("generator"),
     "label_genParticle": cms.InputTag("genParticles"),
     ############################## RECO ##############################
-    "label_pileup": cms.InputTag("addPileupInfo"),
-    "label_rho": cms.InputTag("fixedGridRhoFastjetAll"),
     "label_HGCEESimHit": cms.InputTag("g4SimHits", "HGCHitsEE"),
-    # label_HGCEESimHit "": cms.InputTag("g4SimHits", "HGCHitsEE", "SIM"),
-    "label_HGCEERecHit": cms.InputTag("HGCalRecHit", "HGCEERecHits"),
-    "label_HGCHEFRecHit": cms.InputTag("HGCalRecHit", "HGCHEFRecHits"),
-    "label_HGCHEBRecHit": cms.InputTag("HGCalRecHit", "HGCHEBRecHits"),
-    "label_PFRecHit": cms.InputTag("particleFlowRecHitHGC", "Cleaned"),
-    "label_simCluster": cms.InputTag("mix", "MergedCaloTruth"),
-    "label_caloParticle": cms.InputTag("mix", "MergedCaloTruth"),
+    "label_HGCHEFSimHit": cms.InputTag("g4SimHits", "HGCHitsHEfront"),
+    "label_HGCHEBSimHit": cms.InputTag("g4SimHits", "HGCHitsHEback"),
+    # "label_HGCEERecHit": cms.InputTag("HGCalRecHit", "HGCEERecHits"),
+    # "label_HGCHEFRecHit": cms.InputTag("HGCalRecHit", "HGCHEFRecHits"),
+    # "label_HGCHEBRecHit": cms.InputTag("HGCalRecHit", "HGCHEBRecHits"),
 }
 process.treeMaker = cms.EDAnalyzer("TreeMaker", **ed_analyzer_kwargs)
 
@@ -232,13 +220,3 @@ process.MessageLogger = cms.Service(
         ERROR=cms.untracked.PSet(limit=cms.untracked.int32(0)),
     ),
 )
-
-
-# from FWCore.ParameterSet.Utilities import convertToUnscheduled
-# process = convertToUnscheduled(process)
-
-
-# Add early deletion of temporary data products to reduce peak memory need
-# from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
-# process = customiseEarlyDelete(process)
-# End adding early deletion
